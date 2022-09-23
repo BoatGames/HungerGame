@@ -544,9 +544,15 @@ public class PlayerInfo {
         int ss = s % 60;
 
         if(min > 0){
-            return min+" 分 "+ss+" 秒";
+            //return min+" 分 "+ss+" 秒";
+            return min+":"+ss;
         }else{
-            return ss+" 秒";
+            if(ss <10){
+                return "0"+ss;
+            }else{
+                return ss+"";
+            }
+            //return ss+" 秒";
         }
 
     }
@@ -562,13 +568,13 @@ public class PlayerInfo {
             mi = "0"+mi;
         }
         if(ss < 10){
-            sss = "0"+ss;
+            sss = "00"+ss;
         }
         if(min > 0){
 
             return mi+":"+sss;
         }else{
-            return "00:"+sss+"";
+            return "00:"+sss;
         }
 
     }
@@ -580,30 +586,33 @@ public class PlayerInfo {
             levelName = " -- ";
         }
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-        lore.add("&7"+format.format(new Date()));
-        lore.add("游戏模式: &a"+levelName);
+        //lore.add("&7"+format.format(new Date()));
+        //lore.add("游戏模式: &a"+levelName);
 
-        lore.add(" ");
+        //lore.add(" ");
         if(isWait){
-            lore.add("玩家数: &a"+gameRoom.getPlayerInfos().size()+" &r/&a "+gameRoom.getRoomConfig().getMaxPlayerSize());
-            lore.add("等待中....");
-            lore.add("   ");
+            //lore.add("玩家数: &a"+gameRoom.getPlayerInfos().size()+" &r/&a "+gameRoom.getRoomConfig().getMaxPlayerSize());
+            lore.add("\uE105 "+gameRoom.getPlayerInfos().size()+"&7/"+gameRoom.getRoomConfig().getMaxPlayerSize());
+            //lore.add("等待中....");
+            //lore.add("   ");
 
         }else{
-            lore.add("    ");
-            lore.add("游戏结束: &a"+formatTime(getGameRoom().loadTime));
-            lore.add("     ");
+            //lore.add("    ");
+            //lore.add("游戏结束: &a"+formatTime(getGameRoom().loadTime));
+            //lore.add("     ");
             if(noDamage > 0){
-                lore.add("无敌时间: &a"+noDamage+" 秒");
+                lore.add("\uE128 No PvP 00:"+noDamage);
             }
             for(TeamInfo teamInfo: gameRoom.getTeamInfos()){
-                lore.add(teamInfo.getTeamConfig().getName()+": &e"+teamInfo.getLivePlayer().size()+" &7/&a "+teamInfo.getTeamPlayers().size());
+                //lore.add(/*teamInfo.getTeamConfig().getName()*/"\uE101 "+teamInfo.getLivePlayer().size()+" &7/&a "+teamInfo.getTeamPlayers().size());
+                lore.add(/*teamInfo.getTeamConfig().getName()*/"\uE101 "+teamInfo.getLivePlayer().size());
             }
-            lore.add("      ");
-            lore.add("&b击杀数: &a"+killCount);
-            lore.add("&e助攻数: &a"+assists);
+           //lore.add("      ");
+            lore.add("\uE114 "+killCount);
+            lore.add("\uE112 "+formatTime(getGameRoom().loadTime));
+            //lore.add("&e助攻数: &a"+assists);
 
-            lore.add("        ");
+            //lore.add("        ");
         }
         Object obj = TotalManager.getConfig().get("game-logo");
         if(obj instanceof List){
@@ -611,7 +620,7 @@ public class PlayerInfo {
                 lore.add(s.toString());
             }
         }else{
-            lore.add(TotalManager.getConfig().getString("game-logo","&l&cT&6o&eC&ar&ba&9f&dt"));
+            //lore.add(TotalManager.getConfig().getString("game-logo","&l&cT&6o&eC&ar&ba&9f&dt"));
         }
         return lore;
     }

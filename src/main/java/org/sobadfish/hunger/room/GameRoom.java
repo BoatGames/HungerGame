@@ -36,9 +36,9 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * 战桥房间信息
- * @author Sobadfish
- * @date 2022/9/9
+ * 饥饿游戏房间信息
+ * @author Sobadfish&BanZang
+ * @date 2022/9/24
  */
 public class GameRoom {
 
@@ -684,7 +684,8 @@ public class GameRoom {
 
                 }
                 //音效
-                addSound(Sound.RANDOM_CLICK);
+                //addSound(Sound.RANDOM_CLICK);
+                addSound(Sound.RANDOM_TOAST);
 
             }
             if(loadTime == 1){

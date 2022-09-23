@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: C:\Users\29347\Documents\GitHub\HungerGame\src\main\java\org
+ \sobadfish\hunger\HungerGameMain.java
+
