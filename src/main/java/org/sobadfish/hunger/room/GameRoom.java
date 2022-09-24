@@ -684,9 +684,12 @@ public class GameRoom {
 
                 }
                 //音效
-                //addSound(Sound.RANDOM_CLICK);
-                addSound(Sound.RANDOM_TOAST);
+                addSound(Sound.RANDOM_CLICK);
+                if(loadTime <= 3){
+                    //音效
+                    addSound(Sound.RANDOM_TOAST);
 
+                }
             }
             if(loadTime == 1){
                 type = GameType.START;

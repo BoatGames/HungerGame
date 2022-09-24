@@ -545,12 +545,20 @@ public class PlayerInfo {
 
         if(min > 0){
             //return min+" 分 "+ss+" 秒";
-            return min+":"+ss;
+            //小于10分钟
+            if(min <10){
+                return "0"+min+":"+ss;
+            }else {
+                //大于十分钟
+                return min+":"+ss;
+            }
+            //return min+":"+ss;
         }else{
+            //当分钟变成0的时候显示秒数
             if(ss <10){
-                return "0"+ss;
+                return "00:0"+ss;
             }else{
-                return ss+"";
+                return "00:"+ss;
             }
             //return ss+" 秒";
         }
@@ -600,8 +608,18 @@ public class PlayerInfo {
             //lore.add("    ");
             //lore.add("游戏结束: &a"+formatTime(getGameRoom().loadTime));
             //lore.add("     ");
-            if(noDamage > 0){
+            /*if(noDamage >= 10){
                 lore.add("\uE128 No PvP 00:"+noDamage);
+            }
+            if(noDamage < 10){
+                lore.add("\uE128 No PvP 00:0"+noDamage);
+            }*/
+            if(noDamage > 9){
+                lore.add("\uE128 No PvP 00:"+noDamage);
+            }else {
+                if(noDamage > 0){
+                    lore.add("\uE128 No PvP 00:0"+noDamage);
+                }
             }
             for(TeamInfo teamInfo: gameRoom.getTeamInfos()){
                 //lore.add(/*teamInfo.getTeamConfig().getName()*/"\uE101 "+teamInfo.getLivePlayer().size()+" &7/&a "+teamInfo.getTeamPlayers().size());
