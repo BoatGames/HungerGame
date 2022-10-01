@@ -62,7 +62,7 @@ public class HungerGameCommand extends Command {
                         }
                     }
                     /*simple.add(new BaseIButton(new ElementButton(TextFormat.colorize('&', wname + " &2" + size + " &r位玩家正在游玩\n&r房间数量: &a" + worldRoom.getRoomConfigs().size()), worldRoom.getImageData())) {*/
-                    simple.add(new BaseIButton(new ElementButton(TextFormat.colorize('&', "&c饥饿&b游戏 &r- &l&5"+wname+" \n&r\uE105 "+size))) {
+                    simple.add(new BaseIButton(new ElementButton(TextFormat.colorize('&', "&c饥饿&b游戏 &r- &l&5"+wname+" \n&r\uE175 "+size))) {
                         @Override
                         public void onClick(Player player) {
                             disPlayRoomsFrom(player, wname);

@@ -547,10 +547,24 @@ public class PlayerInfo {
             //return min+" 分 "+ss+" 秒";
             //小于10分钟
             if(min <10){
-                return "0"+min+":"+ss;
+                if(ss <10){
+                    //小于十秒钟
+                    return "0"+min+":0"+ss;
+                }else {
+                    //大于十秒钟
+                    return "0"+min+":"+ss;
+                }
+                //return "0"+min+":"+ss;
             }else {
                 //大于十分钟
-                return min+":"+ss;
+                if(ss <10){
+                    //小于十秒钟
+                    return min+":0"+ss;
+                }else {
+                    //大于十秒钟
+                    return min+":"+ss;
+                }
+                //return min+":"+ss;
             }
             //return min+":"+ss;
         }else{
@@ -567,7 +581,7 @@ public class PlayerInfo {
 
 
 
-    public static String formatTime1(int s){
+    /*public static String formatTime1(int s){
         int min = s / 60;
         int ss = s % 60;
         String mi = min+"";
@@ -585,7 +599,7 @@ public class PlayerInfo {
             return "00:"+sss;
         }
 
-    }
+    }*/
 
     private ArrayList<String> getLore(boolean isWait){
         ArrayList<String> lore = new ArrayList<>();
@@ -600,7 +614,7 @@ public class PlayerInfo {
         //lore.add(" ");
         if(isWait){
             //lore.add("玩家数: &a"+gameRoom.getPlayerInfos().size()+" &r/&a "+gameRoom.getRoomConfig().getMaxPlayerSize());
-            lore.add("\uE105 "+gameRoom.getPlayerInfos().size()+"&7/"+gameRoom.getRoomConfig().getMaxPlayerSize());
+            lore.add("\uE175 "+gameRoom.getPlayerInfos().size()+"&7/"+gameRoom.getRoomConfig().getMaxPlayerSize());
             //lore.add("等待中....");
             //lore.add("   ");
 
@@ -614,23 +628,37 @@ public class PlayerInfo {
             if(noDamage < 10){
                 lore.add("\uE128 No PvP 00:0"+noDamage);
             }*/
-            if(noDamage > 9){
-                lore.add("\uE128 No PvP 00:"+noDamage);
-            }else {
-                if(noDamage > 0){
-                    lore.add("\uE128 No PvP 00:0"+noDamage);
+            //无敌时间
+            if (noDamage > 9) {
+                lore.add("\uE198 No PvP 00:" + noDamage);
+            } else {
+                if (noDamage > 0) {
+                    lore.add("\uE198 No PvP 00:0" + noDamage);
                 }
             }
-            for(TeamInfo teamInfo: gameRoom.getTeamInfos()){
-                //lore.add(/*teamInfo.getTeamConfig().getName()*/"\uE101 "+teamInfo.getLivePlayer().size()+" &7/&a "+teamInfo.getTeamPlayers().size());
-                lore.add(/*teamInfo.getTeamConfig().getName()*/"\uE101 "+teamInfo.getLivePlayer().size());
-            }
-           //lore.add("      ");
-            lore.add("\uE114 "+killCount);
-            lore.add("\uE112 "+formatTime(getGameRoom().loadTime));
-            //lore.add("&e助攻数: &a"+assists);
+            //游戏开始才开启计分板
+            if(noDamage > -1) {
+                for (TeamInfo teamInfo : gameRoom.getTeamInfos()) {
+                    //lore.add(/*teamInfo.getTeamConfig().getName()*/"\uE101 "+teamInfo.getLivePlayer().size()+" &7/&a "+teamInfo.getTeamPlayers().size());
+                    //lore.add("\uE103 0");
+                    lore.add(/*teamInfo.getTeamConfig().getName()*/"\uE171 " + teamInfo.getLivePlayer().size());
+                }
+                //lore.add("      ");
+                lore.add("\uE184 " + killCount);
+                lore.add("\uE182 " + formatTime(getGameRoom().loadTime));
+                //lore.add("&e助攻数: &a"+assists);
 
-            //lore.add("        ");
+                //lore.add("        ");
+            }
+
+
+            /*
+            if(getPlayer().isPlayer){
+                lore.add("\uE114 " + killCount);
+                lore.add("\uE112 " + formatTime(getGameRoom().loadTime));
+            }*/
+            
+            
         }
         Object obj = TotalManager.getConfig().get("game-logo");
         if(obj instanceof List){
@@ -656,19 +684,51 @@ public class PlayerInfo {
     public void onUpdate(){
         //TODO 玩家进入房间后每秒就会调用这个方法
         if(playerType == PlayerType.START) {
+
+            //正式开始游戏倒计时
             if (waitTIme > 0) {
                 if (!player.isImmobile()) {
                     player.setImmobile(true);
                 }
-                sendTitle("", waitTIme);
-                sendSubTitle("&e" + waitTIme + " &6秒后开始,请做好准备");
+                //
+                switch (waitTIme){
+                    /*case 10: sendTitle("");sendActionBar("&eGame Start » ▌▌▌▌▌▌▌▌▌▌ &r"+waitTIme);break;
+                    case 9: sendActionBar("&eGame Start » ▌▌▌▌▌▌▌▌▌&7▌ &r"+waitTIme);break;
+                    case 8: sendActionBar("&eGame Start » ▌▌▌▌▌▌▌▌&7▌▌ &r"+waitTIme);break;
+                    case 7: sendActionBar("&eGame Start » ▌▌▌▌▌▌▌&7▌▌▌ &r"+waitTIme);break;
+                    case 6: sendActionBar("&eGame Start » ▌▌▌▌▌▌&7▌▌▌▌ &r"+waitTIme);break;
+                    case 5: sendActionBar("&eGame Start » ▌▌▌▌▌&7▌▌▌▌▌ &r"+waitTIme);break;
+                    case 4: sendActionBar("&eGame Start » ▌▌▌▌&7▌▌▌▌▌▌ &r"+waitTIme);break;
+                    case 3: sendActionBar("&eGame Start » &c▌▌▌&7▌▌▌▌▌▌▌ &r"+waitTIme);addSound(Sound.RANDOM_TOAST);break;
+                    case 2: sendActionBar("&eGame Start » &c▌▌&7▌▌▌▌▌▌▌▌ &r"+waitTIme);addSound(Sound.RANDOM_TOAST);break;
+                    case 1: sendActionBar("&eGame Start » &c▌&7▌▌▌▌▌▌▌▌▌ &r"+waitTIme);addSound(Sound.RANDOM_TOAST);break;*/
+                    case 10: sendTitle("");sendActionBar("&e游戏开始 » ▌▌▌▌▌▌▌▌▌▌ &r"+waitTIme);break;
+                    case 9: sendActionBar("&e游戏开始 ≫ ▌▌▌▌▌▌▌▌▌&7▌ &r"+waitTIme);break;
+                    case 8: sendActionBar("&e游戏开始 ≫ ▌▌▌▌▌▌▌▌&7▌▌ &r"+waitTIme);break;
+                    case 7: sendActionBar("&e游戏开始 ≫ ▌▌▌▌▌▌▌&7▌▌▌ &r"+waitTIme);break;
+                    case 6: sendActionBar("&e游戏开始 ≫ ▌▌▌▌▌▌&7▌▌▌▌ &r"+waitTIme);break;
+                    case 5: sendActionBar("&e游戏开始 ≫ ▌▌▌▌▌&7▌▌▌▌▌ &r"+waitTIme);break;
+                    case 4: sendActionBar("&e游戏开始 ≫ ▌▌▌▌&7▌▌▌▌▌▌ &r"+waitTIme);break;
+                    case 3: sendActionBar("&e游戏开始 ≫ &c▌▌▌&7▌▌▌▌▌▌▌ &r"+waitTIme);addSound(Sound.RANDOM_TOAST);break;
+                    case 2: sendActionBar("&e游戏开始 ≫ &c▌▌&7▌▌▌▌▌▌▌▌ &r"+waitTIme);addSound(Sound.RANDOM_TOAST);break;
+                    case 1: sendActionBar("&e游戏开始 ≫ &c▌&7▌▌▌▌▌▌▌▌▌ &r"+waitTIme);addSound(Sound.RANDOM_TOAST);break;
+                    default:
+                        sendTitle("");break;
+
+                }
+                //sendTitle("", waitTIme);
+                //sendSubTitle("&e" + waitTIme + " &6秒后开始,请做好准备");
+                sendActionBar("");
                 waitTIme--;
+
+
             } else {
                 if (player.isImmobile()) {
                     player.setImmobile(false);
                     sendTitle("&c开始！", 2);
                     if (!gameRoom.isDeath) {
-                        sendSubTitle("&e您有 "+gameRoom.roomConfig.noDamage+" 秒的无敌时间");
+                        //sendSubTitle("&e您有 "+gameRoom.roomConfig.noDamage+" 秒的无敌时间");
+                        sendSubTitle("&e您有 30 秒的无敌时间");
                         noDamage = gameRoom.roomConfig.noDamage;
                     }
                 }

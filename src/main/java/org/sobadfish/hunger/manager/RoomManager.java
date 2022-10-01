@@ -821,7 +821,8 @@ public class RoomManager implements Listener {
                 TeamInfo teamInfo = info.getGameRoom().getTeamInfos().get(((FormResponseSimple) event.getResponse())
                         .getClickedButtonId());
                 if(!teamInfo.join(info)){
-                    info.sendMessage("&c你已经加入了 "+ teamInfo);
+                    //info.sendMessage("&c你已经加入了 "+ teamInfo);
+                    info.sendMessage("&a加入了&r"+ teamInfo +" &a成功");
                 }else{
                     info.sendMessage("&a加入了&r"+ teamInfo +" &a成功");
                     player.getInventory().setItem(0,teamInfo.getTeamConfig().getTeamConfig().getBlockWoolColor());

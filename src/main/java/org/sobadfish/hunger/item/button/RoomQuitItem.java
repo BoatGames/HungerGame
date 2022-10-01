@@ -39,7 +39,7 @@ public class RoomQuitItem {
         CompoundTag tag = item.getNamedTag();
         tag.putString(TotalManager.GAME_NAME,"quitItem");
         item.setNamedTag(tag);
-        item.setCustomName(TextFormat.colorize('&',"&r&7[使用]&l&e返回大厅"));
+        item.setCustomName(TextFormat.colorize('&',"&r&l&b返回大厅 &r&7[再次手持]"));
         return item;
 
     }
